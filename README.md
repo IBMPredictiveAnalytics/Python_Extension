@@ -1,6 +1,8 @@
 # Python_Extension
 
 This extension try provider a common node to execute python script.
+![Screenshot](./Screenshot/stream.jpg)
+![Screenshot1](./Screenshot/node.jpg)
 
 ---
 Requirements
@@ -23,6 +25,31 @@ Installation instructions
 2. Search and open repository, download corresponding *.mpe file.
 3. Start installation by: "Extensions" -> "Install Local Extension Bundle"
 4. Select *.mpe file and install it.
+
+---
+Python Scripts Example
+---
+#### Use `sys.argv` to share variable
+#### Get `inputDataframe` and `inputSchema` from `sys.argv`
+#### Save `outputDataframe` and `outputSchema` to `sys.argv` after data transform
+
+Example Code:
+
+```
+from pyspark.sql.functions import lit
+from pyspark.sql.types import StructType, StructField, DoubleType
+import sys
+
+
+data = sys.argv['inputDataframe']
+schema = sys.argv['inputSchema']
+
+if sys.argv['schemaOnly']:
+    sys.argv['outputSchema'] = StructType(data.schema.fields + 
+                    [StructField("newConstant", DoubleType(), False) ])
+else:
+    sys.argv['outputDataframe'] = data.withColumn('new', lit(1.0))
+```
 
 ---
 License
